@@ -8,7 +8,7 @@ This is a temporary script file.
 import sys
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QSlider, QScrollBar, QPushButton, QScrollArea
+from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QSlider, QPushButton, QScrollArea, QLabel
 
 class GUI(QWidget):
     def __init__(self):
@@ -17,6 +17,8 @@ class GUI(QWidget):
         eff = ["Effect 1", "Effect 2", "Effect 3", "Effect 4", "Effect 5", "Effect 6", "Effect 7", "Effect 8", "Effect 9"]
         layout = QVBoxLayout()
         self.effects = []
+        
+        baseImg = "PUT YOUR IMAGE HERE"
         
         for i in range(len(eff)):
             self.effects.append(QPushButton(eff[i]))
@@ -42,18 +44,23 @@ class GUI(QWidget):
         
         self.scroll = QScrollArea()
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        #self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll.setWidgetResizable(False)
         self.scroll.setWidget(self.buttons)
         self.scroll.setFixedWidth(150)
         #self.scroll.setFixedSize(150, 300)
         
+        self.imgLabel = QLabel()
+        pixmap = QPixmap(baseImg)
+        self.imgLabel.setPixmap(pixmap)
+        #self.imgLabel.resize(pixmap.width(),pixmap.height())
+        
         VLayout = QVBoxLayout()
-        self.widg = QWidget()
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setFixedWidth(100)
-        VLayout.addWidget(self.widg)
+        VLayout.addWidget(self.imgLabel)
         VLayout.addWidget(self.slider)
+        VLayout.setAlignment(Qt.AlignCenter)
         self.left = QWidget()
         self.left.setLayout(VLayout)
         
@@ -62,7 +69,11 @@ class GUI(QWidget):
         lay.addWidget(self.left)
         self.setLayout(lay)
         #self.setFixedSize(350, 320)
-        self.setWindowTitle("Image")
+        self.setAutoFillBackground(True)
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.black)
+        self.setPalette(p)
+        self.setWindowTitle("GUI")
         
     @pyqtSlot() 
     def changeEffect(self, x):
