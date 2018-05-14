@@ -16,7 +16,7 @@ NumofImages = [
 ]
 
 #List of all effects (Antonin)
-eff = ["Mirror (left-right)", "Mirror(up-down)", "Rotate", "Red Filter", "Green Filter", "Blue Filter", "Gray Scale", "Restest changes"]
+eff = ["Mirror (left-right)", "Mirror(up-down)", "Rotate", "Red Filter", "Green Filter", "Blue Filter", "Gray Scale", "Reset Changes"]
 
 #*****************************MAIN MENU****************************
 class App(QWidget):
@@ -24,11 +24,11 @@ class App(QWidget):
 		super().__init__()
 		self.title = 'PyQt5 file dialogs - pythonspot.com'
 		self.mainmenu()
-			
+
 	def mainmenu(self):
 		self.combo = QComboBox()
 		self.combo.addItems(NumofImages)
-		
+
 		self.btn = QPushButton('Enter')
 		vbox = QVBoxLayout()
 		vbox.addWidget(self.combo)
@@ -36,30 +36,30 @@ class App(QWidget):
 		self.setLayout(vbox)
 		self.resize(200,150)
 		self.show()
-		self.btn.clicked.connect(self.open_win)	
-		
+		self.btn.clicked.connect(self.open_win)
+
 	def open_win(self):
 		i = self.combo.currentIndex()
 		if i==1:
 			self.newWindow = windowOne()
 		if i==2:
 			self.newWindowTwo = windowTwo()
-#*******************************************************************		
+#*******************************************************************
 
 #*****************************ONE IMAGE****************************
 class windowOne(QWidget):
 	def __init__(self):
 		super().__init__()
 		self.openFileNameDialog()
-		layout = QVBoxLayout()		
+		layout = QVBoxLayout()
 		self.effects = []
 
 #Create a window with all the button, bind the buttons to the effects(Antonin)
 		self.baseImg = self.fileName
-		
+
 		for i in range(len(eff)):
 			self.effects.append(QPushButton(eff[i]))
-			self.effects[i].setCheckable(True)	
+			self.effects[i].setCheckable(True)
 
 		self.effects[0].clicked.connect(lambda: self.changeEffect(0))
 		self.effects[1].clicked.connect(lambda: self.changeEffect(1))
@@ -69,36 +69,35 @@ class windowOne(QWidget):
 		self.effects[5].clicked.connect(lambda: self.changeEffect(5))
 		self.effects[6].clicked.connect(lambda: self.changeEffect(6))
 		self.effects[7].clicked.connect(lambda: self.changeEffect(7))
-		
+
 		for i in range(len(eff)):
 			layout.addWidget(self.effects[i])
-	
+
 		self.buttons = QWidget()
 		self.buttons.setLayout(layout)
 		
 #Make the effects scrollable and show the image on the window (Antonin)
-        
 		self.scroll = QScrollArea()
 		self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 		self.scroll.setWidgetResizable(False)
 		self.scroll.setWidget(self.buttons)
 		self.scroll.setFixedWidth(150)
-		
+
 		self.imgLabel = QLabel()
 		self.pixmap = QPixmap(self.baseImg)
 		self.imgLabel.setPixmap(self.pixmap)
 		self.pix = self.pixmap.copy()
-		
+
 		VLayout = QVBoxLayout()
 		self.savebtn = QPushButton('Save')
 
-	
+
 		VLayout.addWidget(self.imgLabel)
 		VLayout.addWidget(self.savebtn)
 
 		self.left = QWidget()
 		self.left.setLayout(VLayout)
-		
+
 		lay = QHBoxLayout()
 		lay.addWidget(self.scroll)
 		lay.addWidget(self.left)
@@ -109,8 +108,8 @@ class windowOne(QWidget):
 		self.setPalette(p)
 		self.setWindowTitle("GUI")
 		self.show()
-		
-	@pyqtSlot() 
+
+	@pyqtSlot()
 
 #Called when a button is pressed (Antonin)
 
@@ -127,7 +126,7 @@ class windowOne(QWidget):
 			self.copyfilename = "ImageCopy.png"
 			self.baseImg = self.copyfilename
 			self.pixmap = QPixmap(self.baseImg)
-			self.imgLabel.setPixmap(self.pixmap)	
+			self.imgLabel.setPixmap(self.pixmap)
 		if (x == 1):
 			self.img1 = Image.open(self.copyfilename).convert("RGB")
 			self.mirrorV(self.img1)
@@ -148,7 +147,7 @@ class windowOne(QWidget):
 			self.copyfilename = "ImageCopy.png"
 			self.baseImg = self.copyfilename
 			self.pixmap = QPixmap(self.baseImg)
-			self.imgLabel.setPixmap(self.pixmap)										
+			self.imgLabel.setPixmap(self.pixmap)
 		if (x == 4):
 			self.img1 = Image.open(self.copyfilename).convert("RGB")
 			self.filterG(self.img1,1.5)
@@ -177,8 +176,8 @@ class windowOne(QWidget):
 			self.baseImg = self.copyfilename
 			self.pixmap = QPixmap(self.baseImg)
 			self.imgLabel.setPixmap(self.pixmap)
-	
-	
+
+
 	def openFileNameDialog(self):
 		options = QFileDialog.Options()
 		options |= QFileDialog.DontUseNativeDialog
@@ -186,21 +185,25 @@ class windowOne(QWidget):
 		if self.fileName:
 			self.copyfilename = self.fileName
 			print(self.fileName)
-			
+
+	#   mirror horizontally - Andrew
 	def mirrorH(self,source):
 		self.new_img = source.copy()
 		self.new_img = self.new_img.transpose(Image.FLIP_LEFT_RIGHT)
 		self.new_img.save("ImageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   mirror vertically - Andrew
 	def mirrorV(self,source):
 		self.new_img = source.copy()
 		self.new_img = self.new_img.transpose(Image.FLIP_TOP_BOTTOM)
 		self.new_img.save("ImageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   rotate by degrees degrees - Andrew
 	def rotate(self,source, degrees):
 		self.new_img = source.rotate(degrees, expand = True)
 		self.new_img.save("ImageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   multiply blue value by percent. 1 being 100% - Andrew
 	def filterB(self,source, percent):
 		self.new_img = source.copy()
 		for x in range(source.width):
@@ -210,6 +213,7 @@ class windowOne(QWidget):
 				self.new_img.putpixel((x,y), (r, g, b))
 		self.new_img.save("ImageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   multiply green value by percent. 1 being 100% - Andrew
 	def filterG(self,source, percent):
 		self.new_img = source.copy()
 		for x in range(source.width):
@@ -219,6 +223,7 @@ class windowOne(QWidget):
 				self.new_img.putpixel((x,y), (r, g, b))
 		self.new_img.save("ImageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   multiply red value by percent. 1 being 100% - Andrew
 	def filterR(self,source, percent):
 		self.new_img = source.copy()
 		for x in range(source.width):
@@ -228,6 +233,7 @@ class windowOne(QWidget):
 				self.new_img.putpixel((x,y), (r, g, b))
 		self.new_img.save("ImageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    # greyscale image - Andrew
 	def filterGrayscale(self,source):
 		self.new_img = source.copy()
 		for x in range(source.width):
@@ -241,7 +247,7 @@ class windowOne(QWidget):
 		self.new_img = source.copy()
 		self.new_img.save("ImageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 #***************************************************************************************
-									
+
 #*****************************TWO IMAGES****************************
 #Same creation of the window with the buttons (Antonin)    
 
@@ -254,13 +260,13 @@ class windowTwo(QWidget):
 		self.collageH(self.img1,self.img2)
 		layout = QVBoxLayout()
 		self.effects = []
-		
+
 		baseImg = "collage.png"
-		
+
 		for i in range(len(eff)):
 			self.effects.append(QPushButton(eff[i]))
 			self.effects[i].setCheckable(True)
-			
+
 		self.effects[0].setChecked(True)
 		self.effects[0].clicked.connect(lambda: self.changeEffect(0))
 		self.effects[1].clicked.connect(lambda: self.changeEffect(1))
@@ -270,14 +276,14 @@ class windowTwo(QWidget):
 		self.effects[5].clicked.connect(lambda: self.changeEffect(5))
 		self.effects[6].clicked.connect(lambda: self.changeEffect(6))
 		self.effects[7].clicked.connect(lambda: self.changeEffect(7))
-		
+
 		for i in range(len(eff)):
 			layout.addWidget(self.effects[i])
-			
-			
+
+
 		self.buttons = QWidget()
 		self.buttons.setLayout(layout)
-		
+
 		self.scroll = QScrollArea()
 		self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 		#self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -285,24 +291,24 @@ class windowTwo(QWidget):
 		self.scroll.setWidget(self.buttons)
 		self.scroll.setFixedWidth(150)
 		#self.scroll.setFixedSize(150, 300)
-		
+
 		self.imgLabel = QLabel()
 		pixmap = QPixmap(baseImg)
 		self.imgLabel.setPixmap(pixmap)
 		#self.imgLabel.resize(pixmap.width(),pixmap.height())
-		
+
 		VLayout = QVBoxLayout()
 #		self.slider = QSlider(Qt.Horizontal)
 #		self.slider.setFixedWidth(100)
 		self.savebtn = QPushButton('Save')
-	
+
 		VLayout.addWidget(self.imgLabel)
 #		VLayout.addWidget(self.slider)
 		VLayout.addWidget(self.savebtn)
 
 		self.left = QWidget()
 		self.left.setLayout(VLayout)
-		
+
 		lay = QHBoxLayout()
 		lay.addWidget(self.scroll)
 		lay.addWidget(self.left)
@@ -313,9 +319,9 @@ class windowTwo(QWidget):
 		p.setColor(self.backgroundRole(), Qt.black)
 		self.setPalette(p)
 		self.setWindowTitle("GUI")
-		self.show()	
-		
-	@pyqtSlot() 
+		self.show()
+
+	@pyqtSlot()
 	def changeEffect(self, x):
 		for i in range(len(self.effects)):
 			if i != x:
@@ -349,7 +355,7 @@ class windowTwo(QWidget):
 			self.copyfilename = "collageCopy.png"
 			self.baseImg = self.copyfilename
 			self.pixmap = QPixmap(self.baseImg)
-			self.imgLabel.setPixmap(self.pixmap)										
+			self.imgLabel.setPixmap(self.pixmap)
 		if (x == 4):
 			self.img1 = Image.open(self.copyfilename2).convert("RGB")
 			self.filterG(self.img1,1.5)
@@ -379,9 +385,9 @@ class windowTwo(QWidget):
 			self.pixmap = QPixmap(self.baseImg)
 			self.imgLabel.setPixmap(self.pixmap)
 
-				
-	#_________________________________________________________________				
-	#-------- THIS CODE GETS THE FILES FROM COMPUTER ---------#				
+
+	#_________________________________________________________________
+	#-------- THIS CODE GETS THE FILES FROM COMPUTER ---------#
 	def openFileNameDialog(self):
 		optionsOne = QFileDialog.Options()
 		optionsOne |= QFileDialog.DontUseNativeDialog
@@ -423,24 +429,28 @@ class windowTwo(QWidget):
 			offsetX = offsetX + img.width
 		self.new_img.save("collage.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		self.new_img.save("collageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
-		self.copyfilename3 = "collage.png" 
+		self.copyfilename3 = "collage.png"
 		self.copyfilename2 = "collageCopy.png"
 
 
+    #   mirror horizontally - Andrew
 	def mirrorH(self,source):
 		self.new_img = source.copy()
 		self.new_img = self.new_img.transpose(Image.FLIP_LEFT_RIGHT)
 		self.new_img.save("collageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   mirror vertically - Andrew
 	def mirrorV(self,source):
 		self.new_img = source.copy()
 		self.new_img = self.new_img.transpose(Image.FLIP_TOP_BOTTOM)
 		self.new_img.save("collageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   rotate by degrees degrees - Andrew
 	def rotate(self,source, degrees):
 		self.new_img = source.rotate(degrees, expand = True)
 		self.new_img.save("collageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   multiply blue value by percent. 1 being 100% - Andrew
 	def filterB(self,source, percent):
 		self.new_img = source.copy()
 		for x in range(source.width):
@@ -450,6 +460,7 @@ class windowTwo(QWidget):
 				self.new_img.putpixel((x,y), (r, g, b))
 		self.new_img.save("collageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   multiply green value by percent. 1 being 100% - Andrew
 	def filterG(self,source, percent):
 		self.new_img = source.copy()
 		for x in range(source.width):
@@ -459,6 +470,7 @@ class windowTwo(QWidget):
 				self.new_img.putpixel((x,y), (r, g, b))
 		self.new_img.save("collageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    #   multiply red value by percent. 1 being 100% - Andrew
 	def filterR(self,source, percent):
 		self.new_img = source.copy()
 		for x in range(source.width):
@@ -468,6 +480,7 @@ class windowTwo(QWidget):
 				self.new_img.putpixel((x,y), (r, g, b))
 		self.new_img.save("collageCopy.png") # MAKES NEW IMAGE CALLED COLLAGE.PNG
 		return self.new_img
+    # greyscale image - Andrew
 	def filterGrayscale(self,source):
 		self.new_img = source.copy()
 		for x in range(source.width):

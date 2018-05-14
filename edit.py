@@ -144,6 +144,26 @@ def filterCustom(source, rPercent, gPercent, bPercent):
         new_img.show()
     return new_img
 
+def rotate(source, degrees):
+    new_img = source.rotate(degrees, expand = True)
+    if DEBUG:
+        new_img.show()
+    return new_img
+
+def mirrorH(source):
+    new_img = source.copy()
+    new_img = new_img.transpose(Image.FLIP_LEFT_RIGHT)
+    if DEBUG:
+        new_img.show()
+    return new_img
+
+def mirrorV(source):
+    new_img = source.copy()
+    new_img = new_img.transpose(Image.FLIP_TOP_BOTTOM)
+    if DEBUG:
+        new_img.show()
+    return new_img
+
 # crop(img1, int(img1.width*.2), int(img1.height*.2), int(img1.width*.8), int(img1.height*.8))
 # resize(img1, 0.5)
 # resize(img1, 2)
@@ -156,3 +176,5 @@ def filterCustom(source, rPercent, gPercent, bPercent):
 # collageH(collageV(filterR(img1, 5), filterG(img2, 5), filterB(img1, 5), filterGrayscale(img1)), crop(img2, 100, 300, 500, 600))
 # filterCustom(img1, 3, 1, 1)
 # filterR(img1, 3)
+# collageH(img1, rotate(img1, 45), img1)
+# mirrorV(img1)
