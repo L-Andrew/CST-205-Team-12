@@ -98,18 +98,17 @@ class windowOne(QWidget):
         for i in range(len(eff)):
             layout.addWidget(self.effects[i])
 
-
-self.buttons = QWidget()
-self.buttons.setLayout(layout)
+        self.buttons = QWidget()
+        self.buttons.setLayout(layout)
 
 #Make the effects scrollable and show the image on the window (Antonin)
-self.scroll = QScrollArea()
-    self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-    self.scroll.setWidgetResizable(False)
-    self.scroll.setWidget(self.buttons)
-    self.scroll.setFixedWidth(150)
-    
-    self.imgLabel = QLabel() #gets the image and displays it on the window
+        self.scroll = QScrollArea()
+        self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll.setWidgetResizable(False)
+        self.scroll.setWidget(self.buttons)
+        self.scroll.setFixedWidth(150)
+
+        self.imgLabel = QLabel() #gets the image and displays it on the window
         self.pixmap = QPixmap(self.baseImg)
         self.imgLabel.setPixmap(self.pixmap)
         self.pix = self.pixmap.copy()
@@ -136,13 +135,13 @@ self.scroll = QScrollArea()
 
     @pyqtSlot()
     #Called when a button is pressed (Antonin)
-def changeEffect(self, x):
-    for i in range(len(self.effects)):
-        click = 0
+    def changeEffect(self, x):
+        for i in range(len(self.effects)):
+            click = 0
             if i != x:
                 self.effects[i].setChecked(False)
-        else:
-            self.effects[i].setChecked(True)
+            else:
+                self.effects[i].setChecked(True)
         #Depending on which button is clicked, it will edit the image or apply a filter (Armando)
         if (x == 0):
             self.img1 = Image.open(self.copyfilename).convert("RGB")
@@ -151,11 +150,11 @@ def changeEffect(self, x):
             self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen (Armando).
             self.imgLabel.setPixmap(self.pixmap)
-if (x == 1):
-    self.img1 = Image.open(self.copyfilename).convert("RGB")
-    self.mirrorV(self.img1)#calls "def mirrorV" and takes in the image chosen.
-    self.copyfilename = "ImageCopy.png"
-        self.baseImg = self.copyfilename
+        if (x == 1):
+            self.img1 = Image.open(self.copyfilename).convert("RGB")
+            self.mirrorV(self.img1)#calls "def mirrorV" and takes in the image chosen.
+            self.copyfilename = "ImageCopy.png"
+            self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen (Armando).
             self.imgLabel.setPixmap(self.pixmap)
         if (x == 2):
@@ -165,10 +164,10 @@ if (x == 1):
             self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen(Armando).
             self.imgLabel.setPixmap(self.pixmap)
-    if (x == 3):
-        self.img1 = Image.open(self.copyfilename).convert("RGB")
-        self.filterR(self.img1,1.5)#calls "def filterR" which will take in the image chosen and the percent of image filter.
-        self.copyfilename = "ImageCopy.png"
+        if (x == 3):
+            self.img1 = Image.open(self.copyfilename).convert("RGB")
+            self.filterR(self.img1,1.5)#calls "def filterR" which will take in the image chosen and the percent of image filter.
+            self.copyfilename = "ImageCopy.png"
             self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen(Armando).
             self.imgLabel.setPixmap(self.pixmap)
@@ -193,20 +192,20 @@ if (x == 1):
             self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen(Armando).
             self.imgLabel.setPixmap(self.pixmap)
-if (x == 7):
-    self.img1 = Image.open(self.fileName).convert("RGB")
-    self.restart(self.img1)#calls "def restart" which will take in the image chosen and gray scale it.
-    self.copyfilename = "ImageCopy.png"
-        self.baseImg = self.copyfilename
+        if (x == 7):
+            self.img1 = Image.open(self.fileName).convert("RGB")
+            self.restart(self.img1)#calls "def restart" which will take in the image chosen and gray scale it.
+            self.copyfilename = "ImageCopy.png"
+            self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen(Armando).
             self.imgLabel.setPixmap(self.pixmap)
 
-#*** Source (Works cited): https://pythonspot.com/pyqt5-file-dialog/ ***
-'''This function will open up the file inside of the users computer system kind of like a finder and will allow the user to pick an image
+    #*** Source (Works cited): https://pythonspot.com/pyqt5-file-dialog/ ***
+    '''This function will open up the file inside of the users computer system kind of like a finder and will allow the user to pick an image
     from their files in their computer to edit. After clicking the image, the image pathway gets save to a variable as well as a to another
     varable which would be the copy of the image.'''
-        #Created by (Armando)
-        def openFileNameDialog(self):
+    #Created by (Armando)
+    def openFileNameDialog(self):
         options = QFileDialog.Options()#Opens up the computers file
         options |= QFileDialog.DontUseNativeDialog
         self.fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=options)#Allows user to pick an image file and sets it as "filename"
@@ -215,11 +214,11 @@ if (x == 7):
             print(self.fileName) #prints the pathway
 
 #   mirror horizontally - Andrew
-def mirrorH(self,source):
-    self.new_img = source.copy()
-    self.new_img = self.new_img.transpose(Image.FLIP_LEFT_RIGHT)
-    self.new_img.save("ImageCopy.png") #saves the copy image (ImageCopy.png) to the filter in addition to other change if applied(Armando).
-    return self.new_img
+    def mirrorH(self,source):
+        self.new_img = source.copy()
+        self.new_img = self.new_img.transpose(Image.FLIP_LEFT_RIGHT)
+        self.new_img.save("ImageCopy.png") #saves the copy image (ImageCopy.png) to the filter in addition to other change if applied(Armando).
+        return self.new_img
     #   mirror vertically - Andrew
     def mirrorV(self,source):
         self.new_img = source.copy()
@@ -311,51 +310,51 @@ class windowTwo(QWidget):
         for i in range(len(eff)):
             layout.addWidget(self.effects[i])
 
-self.buttons = QWidget()
-self.buttons.setLayout(layout)
+        self.buttons = QWidget()
+        self.buttons.setLayout(layout)
 
-self.scroll = QScrollArea()
-self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-self.scroll.setWidgetResizable(False)
-self.scroll.setWidget(self.buttons)
-self.scroll.setFixedWidth(150)
+        self.scroll = QScrollArea()
+        self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll.setWidgetResizable(False)
+        self.scroll.setWidget(self.buttons)
+        self.scroll.setFixedWidth(150)
 
-self.imgLabel = QLabel()#gets the image and displays it on the window
-pixmap = QPixmap(baseImg)
-self.imgLabel.setPixmap(pixmap)
+        self.imgLabel = QLabel()#gets the image and displays it on the window
+        pixmap = QPixmap(baseImg)
+        self.imgLabel.setPixmap(pixmap)
 
-VLayout = QVBoxLayout()
-self.savebtn = QPushButton('Save')
+        VLayout = QVBoxLayout()
+        self.savebtn = QPushButton('Save')
 
-VLayout.addWidget(self.imgLabel)
-VLayout.addWidget(self.savebtn)
+        VLayout.addWidget(self.imgLabel)
+        VLayout.addWidget(self.savebtn)
 
-self.left = QWidget()
-self.left.setLayout(VLayout)
+        self.left = QWidget()
+        self.left.setLayout(VLayout)
 
-lay = QHBoxLayout()
-lay.addWidget(self.scroll)
-lay.addWidget(self.left)
-self.setLayout(lay)
-self.setAutoFillBackground(True)
-p = self.palette()
-p.setColor(self.backgroundRole(), Qt.black)
-self.setPalette(p)
-self.setWindowTitle("GUI")
-self.show()
+        lay = QHBoxLayout()
+        lay.addWidget(self.scroll)
+        lay.addWidget(self.left)
+        self.setLayout(lay)
+        self.setAutoFillBackground(True)
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.black)
+        self.setPalette(p)
+        self.setWindowTitle("GUI")
+        self.show()
 
-@pyqtSlot()
-def changeEffect(self, x):
-    for i in range(len(self.effects)):
-        if i != x:
-            self.effects[i].setChecked(False)
+    @pyqtSlot()
+    def changeEffect(self, x):
+        for i in range(len(self.effects)):
+            if i != x:
+                self.effects[i].setChecked(False)
             else:
                 self.effects[i].setChecked(True)
     #Depending on which button is clicked, it will edit the image or apply a filter (Armando)
-    if (x == 0):
-        self.img1 = Image.open(self.copyfilename2).convert("RGB")
-        self.mirrorH(self.img1)#calls "def mirrorV" and takes in the image chosen.
-        self.copyfilename = "collageCopy.png"
+        if (x == 0):
+            self.img1 = Image.open(self.copyfilename2).convert("RGB")
+            self.mirrorH(self.img1)#calls "def mirrorV" and takes in the image chosen.
+            self.copyfilename = "collageCopy.png"
             self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen (Armando).
             self.imgLabel.setPixmap(self.pixmap)
@@ -380,10 +379,10 @@ def changeEffect(self, x):
             self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen(Armando).
             self.imgLabel.setPixmap(self.pixmap)
-    if (x == 4):
-        self.img1 = Image.open(self.copyfilename2).convert("RGB")
-        self.filterG(self.img1,1.5)#calls "def filterG" which will take in the image chosen and the percent of image filter.
-        self.copyfilename = "collageCopy.png"
+        if (x == 4):
+            self.img1 = Image.open(self.copyfilename2).convert("RGB")
+            self.filterG(self.img1,1.5)#calls "def filterG" which will take in the image chosen and the percent of image filter.
+            self.copyfilename = "collageCopy.png"
             self.baseImg = self.copyfilename
             self.pixmap = QPixmap(self.baseImg)#get the image copy with the filter and displays it on the windown screen(Armando).
             self.imgLabel.setPixmap(self.pixmap)
@@ -410,23 +409,23 @@ def changeEffect(self, x):
             self.imgLabel.setPixmap(self.pixmap)
 
 
-#*** Source (Works cited): https://pythonspot.com/pyqt5-file-dialog/ ***
-'''This function will open up the file inside of the users computer system kind of like a finder and will allow the user to pick an image
+    #*** Source (Works cited): https://pythonspot.com/pyqt5-file-dialog/ ***
+    '''This function will open up the file inside of the users computer system kind of like a finder and will allow the user to pick an image
     from their files in their computer to edit. The differnce in this code is that 2 images are going to be picked, the file will open up once
     let the user pick an image and will open up the file again allowing the user to pick another image. After selecting the image the collage function
     will be called and combine both images together into 1.'''
-        #Created by (Armando)
-        def openFileNameDialog(self):
+    #Created by (Armando)
+    def openFileNameDialog(self):
         optionsOne = QFileDialog.Options()#Opens up the computers file
         optionsOne |= QFileDialog.DontUseNativeDialog
         self.fileNameOne, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=optionsOne)#Allows user to pick an image file and sets it as "fileNameOne"
         if self.fileNameOne:
             print(self.fileNameOne)#prints the pathway
-optionsTwo = QFileDialog.Options()
-optionsTwo |= QFileDialog.DontUseNativeDialog
-    self.fileNameTwo, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=optionsTwo)#Allows user to pick another image file and sets it as "fileNameTwo"
-    if self.fileNameTwo:
-        print(self.fileNameTwo)#prints the pathway
+        optionsTwo = QFileDialog.Options()
+        optionsTwo |= QFileDialog.DontUseNativeDialog
+        self.fileNameTwo, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=optionsTwo)#Allows user to pick another image file and sets it as "fileNameTwo"
+        if self.fileNameTwo:
+            print(self.fileNameTwo)#prints the pathway
     
     #--------RESIZES THE IMAGES TO PUT IN COLLAGE --------#
     def resizeImg(self,source, percent):
