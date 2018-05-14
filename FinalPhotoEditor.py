@@ -5,7 +5,7 @@
     Date: May 14, 2018
     GitHub Link: https://github.com/L-Andrew/CST-205-Team-12.git
     
-    ***TO RUN CODE, PUT FILE IN VIRTUAL ENVIRONMENT***
+    ***TO RUN CODE, PUT FILE IN VIRTUAL ENVIRONMENT AND HAVE PYQT5 AND PILLOW INSTALLED***
     
     Abstract:
     The purpose of this project was to create a photo editor, that allows user to customize any image they want and save it as a copy.
