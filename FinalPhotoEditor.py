@@ -14,6 +14,8 @@ NumofImages = [
 '1 Image',
 '2 Images',
 ]
+
+#List of all effects (Antonin)
 eff = ["Mirror (left-right)", "Mirror(up-down)", "Rotate", "Red Filter", "Green Filter", "Blue Filter", "Gray Scale", "Reset Changes"]
 
 #*****************************MAIN MENU****************************
@@ -52,7 +54,7 @@ class windowOne(QWidget):
 		layout = QVBoxLayout()
 		self.effects = []
 
-
+#Create a window with all the button, bind the buttons to the effects(Antonin)
 		self.baseImg = self.fileName
 
 		for i in range(len(eff)):
@@ -73,7 +75,8 @@ class windowOne(QWidget):
 
 		self.buttons = QWidget()
 		self.buttons.setLayout(layout)
-
+		
+#Make the effects scrollable and show the image on the window (Antonin)
 		self.scroll = QScrollArea()
 		self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
 		self.scroll.setWidgetResizable(False)
@@ -107,6 +110,8 @@ class windowOne(QWidget):
 		self.show()
 
 	@pyqtSlot()
+
+#Called when a button is pressed (Antonin)
 
 	def changeEffect(self, x):
 		for i in range(len(self.effects)):
@@ -244,6 +249,8 @@ class windowOne(QWidget):
 #***************************************************************************************
 
 #*****************************TWO IMAGES****************************
+#Same creation of the window with the buttons (Antonin)    
+
 class windowTwo(QWidget):
 	def __init__(self):
 		super().__init__()
